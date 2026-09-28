@@ -1,0 +1,30 @@
+{
+  "name": "dsh-wb-enhance-prompt",
+  "version": "2.0.0",
+  "description": "WB 提示词增强：原生 Harness 输入栏、跟随模型、HTTP/HTTPS、自定义 Chat/Responses API",
+  "type": "module",
+  "main": "./src/host.js",
+  "exports": {
+    ".": "./src/host.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-primitives"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "peerDependencies": { "@deepseek-ai/cordis": "^4.0.4" },
+  "files": ["src", "lib", "scripts", "test", "cordis.patch.yml", "README.zh-CN.md", "NOTICE.md", "LICENSE"]
+}

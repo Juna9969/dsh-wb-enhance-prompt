@@ -26,5 +26,6 @@
     "test": "node --test test/*.test.mjs"
   },
   "peerDependencies": { "@deepseek-ai/cordis": "^4.0.4" },
+  "peerDependenciesMeta": { "@deepseek-ai/cordis": { "optional": true } },
   "files": ["src", "lib", "scripts", "test", "cordis.patch.yml", "README.zh-CN.md", "NOTICE.md", "LICENSE"]
 }

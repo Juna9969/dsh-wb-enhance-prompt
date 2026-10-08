@@ -1,6 +1,7 @@
 import { BlockAssembler } from '@deepseek-ai/dsh-llm';
 import { credentialKey } from '@deepseek-ai/dsh-credentials';
 import { DEFAULTS } from './draft.js';
+import { collectRecentHistory } from './history.js';
 import { buildPrompts } from './prompts.js';
 import { EnhanceError, MAX_DRAFT_CHARS, MAX_PAYLOAD_BYTES, REQUEST_TIMEOUT_MS,
   customRequest, testCustom, validateSettings, validateText } from './api.js';
@@ -17,10 +18,19 @@ async function storedSettings(ctx) {
 }
 
 export async function currentRoute(ctx, sessionId, signal) {
-  if (!sessionId) return ctx.agentDefaultModel.currentSelection();
+  return (await observeEnhanceSession(ctx, sessionId, signal)).route;
+}
+
+export async function observeEnhanceSession(ctx, sessionId, signal) {
+  const fallback = { route: ctx.agentDefaultModel.currentSelection(), history: [] };
+  if (!sessionId) return fallback;
   const observation = await ctx.sessionQuery.observeSession(sessionId, { signal });
-  try { return observation.projections?.values.modelSelection?.next ?? ctx.agentDefaultModel.currentSelection(); }
-  finally { observation[Symbol.dispose](); }
+  try {
+    return {
+      route: observation.projections?.values.modelSelection?.next ?? fallback.route,
+      history: collectRecentHistory(observation.events),
+    };
+  } finally { observation[Symbol.dispose](); }
 }
 
 export async function nativeRequest(ctx, route, prompts, signal) {
@@ -106,7 +116,9 @@ export function apply(ctx) {
         }
         const saved = await storedSettings(ctx);
         settings = saved.settings;
-        const route = settings.source === 'harness' ? await currentRoute(ctx, payload.sessionId, signal) : undefined;
+        const observed = payload.sessionId ? await observeEnhanceSession(ctx, payload.sessionId, signal)
+          : { route: ctx.agentDefaultModel.currentSelection(), history: [] };
+        const route = settings.source === 'harness' ? observed.route : undefined;
         if (payload.action === 'test') {
           let message;
           if (settings.source === 'custom') message = await testCustom(settings, saved.apiKey, signal);
@@ -117,13 +129,15 @@ export function apply(ctx) {
           remember({ time: new Date().toISOString(), action: 'test', source: settings.source, status: 'ok', elapsedMs: Date.now() - started });
           return Response.json({ ok: true, value: { message, diagnostics: [...diagnostics] } });
         }
-        const prompts = buildPrompts(payload.draft, settings.mode);
+        const history = payload.sessionId ? observed.history : [];
+        const prompts = buildPrompts(payload.draft, settings.mode, history);
         const text = settings.source === 'custom'
           ? await customRequest(settings, saved.apiKey, prompts, signal)
           : await nativeRequest(ctx, route, prompts, signal);
         signal.throwIfAborted();
         remember({ time: new Date().toISOString(), action: 'enhance', source: settings.source, mode: settings.mode,
-          status: 'ok', elapsedMs: Date.now() - started, inputChars: payload.draft.length, outputChars: text.length });
+          status: 'ok', elapsedMs: Date.now() - started, inputChars: payload.draft.length, outputChars: text.length,
+          historyTurns: history.length });
         return Response.json({ ok: true, value: { text, mode: settings.mode,
           model: route ? `${route.provider} / ${route.model}` : settings.model, diagnostics: [...diagnostics] } });
       } catch (error) {

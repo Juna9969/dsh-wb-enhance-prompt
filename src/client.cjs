@@ -93,7 +93,7 @@ function EnhanceControl({ sessionId, shell, useInput, inputActions, uiSession, b
     if (before.draft.length > 100000) { update({ notice: '草稿超过 100000 字符，请缩短后重试。' }); return; }
     const job = { controller: new AbortController(), reason: '' };
     flight.current = job;
-    update({ busy: true, notice: '正在增强… 只发送当前草稿，不发送历史或附件内容。' });
+    update({ busy: true, notice: '正在增强… 发送当前草稿和有界近期对话摘要，不发送附件或项目文件。' });
     try {
       const value = await bridge('enhance', { sessionId, draft: before.draft }, job.controller.signal);
       const result = { text: value.text, before: before.draft, mode: value.mode, model: value.model, issue: '', applied: false };
@@ -157,7 +157,7 @@ function EnhanceControl({ sessionId, shell, useInput, inputActions, uiSession, b
         onChange: e => setClearKey(e.target.checked), disabled: saving || state.busy }), '清除保存的自定义密钥'),
       form.protocol === 'responses' && h('label', { className: 'wbep-check' }, h('input', { type: 'checkbox', checked: form.omitStore,
         onChange: e => editForm('omitStore', e.target.checked), disabled: saving || state.busy }), '省略 store 字段（兼容别名/特殊网关；GLM-5.2 自动省略）')),
-    h('p', { className: 'wbep-privacy' }, '只发送当前草稿，不读取聊天历史、附件内容或项目文件。最多等待 90 秒；无自动重试；结果不会自动发送。密钥存于本机 Host 凭据存储，不在浏览器持久化。'),
+    h('p', { className: 'wbep-privacy' }, '发送当前草稿，并由 Host 附带最近若干轮用户/助手正文（有条数和字符上限，过长会截断）。不发送附件内容、项目文件、工具结果或推理过程。最多等待 90 秒；无自动重试；结果不会自动发送。密钥存于本机 Host 凭据存储，不在浏览器持久化。'),
     h('div', { className: 'wbep-actions' }, actionButton(saving ? '处理中…' : '保存设置', () => save(), { variant: 'primary', disabled: saving || state.busy }),
       actionButton('保存并检查连接', () => save(true), { variant: 'outline', disabled: saving || state.busy })),
     h('small', null, '跟随模式只检查模型配置；独立模式检查 /models，不代表生成接口一定可用。'));

@@ -11,6 +11,7 @@ DeepSeek Harness 原生插件：WB Enhance Prompt 1.5.5-share 的原生移植。
 ### 方式 A：Harness 插件管理入口（Desktop，推荐）
 
 1. 获取安装包：下载 [Releases](https://github.com/Juna9969/dsh-wb-enhance-prompt/releases) 中的 `dsh-wb-enhance-prompt-2.0.0.tgz`，或按方式 C 从源码打包。
+   > Release 上的 `v2.0.0` 资产为 **2026-09-28** 的构建，早于「有界近期会话上下文」改动（`src/history.js`）。需要该功能时请用**方式 C** 从 `main` 打包，或安装更新的 Release。
 2. 在 Harness 的「插件」管理入口选择从本地 `.tgz` 安装，填写该文件的**绝对路径**。
 3. 启用 `dsh-wb-enhance-prompt` 组合包，然后刷新**原来的** Harness 页面。
 

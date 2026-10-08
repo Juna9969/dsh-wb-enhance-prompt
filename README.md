@@ -31,9 +31,10 @@ dsh plugin --profile web add "C:\absolute\path\to\dsh-wb-enhance-prompt-2.0.0.tg
 git clone https://github.com/Juna9969/dsh-wb-enhance-prompt.git
 cd dsh-wb-enhance-prompt
 npm pack                     # 生成 dsh-wb-enhance-prompt-2.0.0.tgz
+pnpm add "C:\absolute\path\to\the\clone"          # 或直接指向源码目录
 ```
 
-然后在目标 profile 目录执行 `pnpm add "<tgz 绝对路径>"`，并确认该 profile 的 `package.json` 中 `dsh.profile.bundles` 列表包含 `dsh-wb-enhance-prompt`。
+在目标 profile 目录执行 `pnpm add "<tgz 或源码目录的绝对路径>"`，并确认该 profile 的 `package.json` 中 `dsh.profile.bundles` 列表包含 `dsh-wb-enhance-prompt`。指向源码目录时，务必先执行 `node scripts/build.mjs` 生成 `lib/client.js`。
 
 ## 依赖安装
 

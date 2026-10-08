@@ -1,6 +1,6 @@
 # WB 提示词增强 · DeepSeek Harness 原生版
 
-**版本 2.0.0** · 根据用户提供的 WB Enhance Prompt 1.5.5-share 重新实现。
+**版本 2.1.0** · 根据用户提供的 WB Enhance Prompt 1.5.5-share 重新实现。
 
 在对话输入栏的**模型按钮左侧**增加「增强」及设置入口。处理当前草稿，并由 Host 附带有界近期会话正文；不自动发送聊天消息，不需要 Codex++，不注入轮询脚本，也不替换现有模型按钮。
 
@@ -66,7 +66,7 @@
 仅当你使用独立 CLI 管理的 Web profile 时，可使用以下命令；将 `web` 替换为实际 profile 名称，不要替换为 `desktop`：
 
 ```powershell
-dsh plugin --profile web add "C:\path\to\dsh-wb-enhance-prompt-2.0.0.tgz"
+dsh plugin --profile web add "C:\path\to\dsh-wb-enhance-prompt-2.1.0.tgz"
 ```
 
 安装后先保留重要草稿，再刷新**原来的 Harness 页面**。插件不需要单独启动 Web 服务。若更新同名 Host 模块，请等待现有任务结束后重启 Harness，以免继续使用进程缓存中的旧模块。

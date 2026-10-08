@@ -1,6 +1,6 @@
 {
   "name": "dsh-wb-enhance-prompt",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "WB 提示词增强：原生 Harness 输入栏、跟随模型、HTTP/HTTPS、自定义 Chat/Responses API",
   "type": "module",
   "main": "./src/host.js",

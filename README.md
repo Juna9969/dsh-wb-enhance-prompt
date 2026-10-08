@@ -10,8 +10,8 @@ DeepSeek Harness 原生插件：WB Enhance Prompt 1.5.5-share 的原生移植。
 
 ### 方式 A：Harness 插件管理入口（Desktop，推荐）
 
-1. 获取安装包：下载 [Releases](https://github.com/Juna9969/dsh-wb-enhance-prompt/releases) 中的 `dsh-wb-enhance-prompt-2.0.0.tgz`，或按方式 C 从源码打包。
-   > Release 上的 `v2.0.0` 资产为 **2026-09-28** 的构建，早于「有界近期会话上下文」改动（`src/history.js`）。需要该功能时请用**方式 C** 从 `main` 打包，或安装更新的 Release。
+1. 获取安装包：下载 [Releases](https://github.com/Juna9969/dsh-wb-enhance-prompt/releases) 中的 `dsh-wb-enhance-prompt-2.1.0.tgz`，或按方式 C 从源码打包。
+   > `v2.1.0` 起包含「有界近期会话上下文」（`src/history.js`）。更早的 `v2.0.0` 资产（2026-09-28 构建）不含该功能，请优先使用 `v2.1.0`。
 2. 在 Harness 的「插件」管理入口选择从本地 `.tgz` 安装，填写该文件的**绝对路径**。
 3. 启用 `dsh-wb-enhance-prompt` 组合包，然后刷新**原来的** Harness 页面。
 
@@ -20,7 +20,7 @@ DeepSeek Harness 原生插件：WB Enhance Prompt 1.5.5-share 的原生移植。
 ### 方式 B：独立 CLI 管理的 Web profile
 
 ```powershell
-dsh plugin --profile web add "C:\absolute\path\to\dsh-wb-enhance-prompt-2.0.0.tgz"
+dsh plugin --profile web add "C:\absolute\path\to\dsh-wb-enhance-prompt-2.1.0.tgz"
 ```
 
 将 `web` 换成实际的 profile 名称，**不要替换为 `desktop`**。
@@ -32,11 +32,11 @@ dsh plugin --profile web add "C:\absolute\path\to\dsh-wb-enhance-prompt-2.0.0.tg
 git clone https://github.com/Juna9969/dsh-wb-enhance-prompt.git
 cd dsh-wb-enhance-prompt
 node scripts/build.mjs       # 改动过客户端源码时执行；克隆自 main 也建议执行一次
-npm pack                     # 生成 dsh-wb-enhance-prompt-2.0.0.tgz（也可跳过，直接装源码目录）
+npm pack                     # 生成 dsh-wb-enhance-prompt-2.1.0.tgz（也可跳过，直接装源码目录）
 
 # 2) 切到目标 profile 目录再安装
 cd "$env:USERPROFILE\.dsh\profiles\<profile>"
-pnpm add "C:\absolute\path\to\dsh-wb-enhance-prompt-2.0.0.tgz"
+pnpm add "C:\absolute\path\to\dsh-wb-enhance-prompt-2.1.0.tgz"
 # 或直接指向源码目录：pnpm add "C:\absolute\path\to\dsh-wb-enhance-prompt"
 ```
 

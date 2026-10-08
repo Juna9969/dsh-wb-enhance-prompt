@@ -34,5 +34,5 @@ test('built native client registers before model and supplies the required input
     useInput: selector => { assert.equal(typeof selector, 'function'); selected = true; return selector(input); } });
   assert.ok(selected);
   assert.equal(tree.children[0].props.className, 'wbep-control');
-  assert.equal(tree.children[0].props['data-wb-enhance'], '2.0.0');
+  assert.equal(tree.children[0].props['data-wb-enhance'], '2.1.0');
 });

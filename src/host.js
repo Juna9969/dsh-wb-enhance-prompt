@@ -79,7 +79,7 @@ export function apply(ctx) {
   const remember = entry => { diagnostics.unshift(entry); diagnostics.splice(8); };
   const publicSettings = async () => {
     const { settings, apiKey } = await storedSettings(ctx);
-    return { settings, hasApiKey: Boolean(apiKey), diagnostics: [...diagnostics], version: '2.0.0' };
+    return { settings, hasApiKey: Boolean(apiKey), diagnostics: [...diagnostics], version: '2.1.0' };
   };
 
   // An exact /api route inherits Harness authentication, Host/Origin admission and request middleware.
